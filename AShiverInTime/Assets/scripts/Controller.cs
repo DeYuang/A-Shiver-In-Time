@@ -19,5 +19,27 @@ public class Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+        if()//a
+        {
+
+        }
+        else if ()//b
+        {
+
+        }
+        
+        if()//left or right
+        {
+
+        }
+        else if()//up
+        {
+
+        }
+        else if()//down
+        {
+
+        }
+
 	}
 }
