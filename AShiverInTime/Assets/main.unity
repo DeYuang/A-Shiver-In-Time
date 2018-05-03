@@ -319,7 +319,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2140877859}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -428,8 +428,3 @@ MonoBehaviour:
   jumpPower: 2
   drag: 1
   runModifier: 2
-  horizontalRays: 4
-  verticalRays: 4
-  horizontalRaySpace: 0
-  verticalRaySpace: 0
-  skinWidth: 0.015
