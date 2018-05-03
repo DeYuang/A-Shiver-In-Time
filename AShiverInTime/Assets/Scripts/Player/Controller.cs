@@ -13,7 +13,19 @@ public class Controller : MonoBehaviour {
     public float baseSpeed = 1f;
     public float jumpPower = 1f;
     public float drag = 1f;
+    public float runModifier = 2f;
     Vector3 movement;
+
+    public int horizontalRays = 4;
+    public int verticalRays = 4;
+
+    [HideInInspector]
+    public float horizontalRaySpace;
+    [HideInInspector]
+    public float verticalRaySpace;
+    [HideInInspector]
+    public float skinWidth = 0.015f;
+
 
     // Use this for initialization
     void Awake () {
@@ -21,6 +33,18 @@ public class Controller : MonoBehaviour {
         playerRigidBody = GetComponent<Rigidbody2D>();
         movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, -gravity, jumpPower),0f);
 	}
+
+    void CastRays()
+    {
+        Bounds bounds = playerCollider.bounds;
+        bounds.Expand(skinWidth * -2);
+
+        horizontalRays = Mathf.Clamp(horizontalRays, 2, int.MaxValue);
+        verticalRays = Mathf.Clamp(verticalRays, 2, int.MaxValue);
+
+        horizontalRaySpace = bounds.size.y / (horizontalRays - 1);
+        verticalRaySpace = bounds.size.x / (verticalRays - 1);
+    }
 	
 	// Update is called once per frame
 	void Update () {

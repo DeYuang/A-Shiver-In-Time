@@ -30,7 +30,7 @@ public class Player_LevelWallet : MonoBehaviour {
 	static public void IncrementPickupCounter(int amount = 1){
 
 		grandTotalPickups += amount;
-		while (levelValues [currentLevel] <= grandTotalPickups) {
+		while (instance.levelValues[currentLevel] <= grandTotalPickups) {
 			// level up!
 			SetLevel(currentLevel + 1);
 		}
