@@ -11,12 +11,12 @@ public class Pickup : MonoBehaviour {
 
 		// Increment level counter and get rid of the pickup
 		Player_LevelWallet.IncrementPickupCounter(pickupValue);
-		SetActive (false);
+		gameObject.SetActive(false);
 	}
 
-	private void OnCollisionEnter(Collider other){
+	private void OnCollisionEnter(Collision other){
 
-		if(other.CompareTag("Player"))
+		if(other.gameObject.tag == "Player")
 			ActivatePickup();
 	}
 

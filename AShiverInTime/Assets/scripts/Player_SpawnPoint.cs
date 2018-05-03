@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player_SpawnPoint : MonoBehaviour {
 
-	static public RigidBody rb;
+	static public Rigidbody2D rb;
 	static public bool spawnPointSet = false;
 	static public Vector3 spawnPoint;
 
@@ -13,7 +13,7 @@ public class Player_SpawnPoint : MonoBehaviour {
 
 		spawnPoint = transform.position;
 		spawnPointSet = true;
-		rb = getComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody2D>();
 	}
 
 	static public void ResetPlayerPosition(){
@@ -22,7 +22,7 @@ public class Player_SpawnPoint : MonoBehaviour {
 			Debug.LogError ("Player_SpawnPoint.ResetPlayerPosition() Error: You tried to reset the player before a spawnpoint was set!");
 			return;
 		}
-		if (!trans) {
+		if (!rb) {
 			Debug.LogError ("Player_SpawnPoint.ResetPlayerPosition() Error: You tried to reset the player before a player Transform was set!\r\nHave you placed the Player_SpawnPoint script on the player character?");
 			return;
 		}

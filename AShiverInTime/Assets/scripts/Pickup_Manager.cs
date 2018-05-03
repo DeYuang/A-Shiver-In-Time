@@ -6,7 +6,7 @@ public class Pickup_Manager : MonoBehaviour {
 
 	static public Pickup_Manager instance;
 
-	public List<GameObject> levelPickups = new List<GameObjects>();
+	static public List<GameObject> levelPickups = new List<GameObject>();
 
 	static public void RegisterPickup(GameObject pickup){
 
@@ -21,7 +21,7 @@ public class Pickup_Manager : MonoBehaviour {
 			levelPickups.Remove (pickup);
 			if (iterationGuard-- < 0) {
 				#if UNITY_EDITOR
-				debug.logError ("Pickup_Manager.cs Unregister Error: instance is in the array more than 8 times!", instance);
+				Debug.LogError ("Pickup_Manager.cs Unregister Error: instance is in the array more than 8 times!", instance);
 				#endif
 				return;
 			}
