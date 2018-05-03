@@ -16,40 +16,27 @@ public class Controller : MonoBehaviour {
     public float runModifier = 2f;
     Vector3 movement;
 
-    public int horizontalRays = 4;
-    public int verticalRays = 4;
-
-    [HideInInspector]
-    public float horizontalRaySpace;
-    [HideInInspector]
-    public float verticalRaySpace;
-    [HideInInspector]
-    public float skinWidth = 0.015f;
-
+    public float playerSpriteWidth = 1f;
+    public float playerSpriteLength = 1f;
 
     // Use this for initialization
-    private void Awake () {
+    void Awake () {
         playerCollider = GetComponent<BoxCollider2D>();
         playerRigidBody = GetComponent<Rigidbody2D>();
+        movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, -gravity, jumpPower),0f);
 	}
 
-    private void CastRays()
+    void CastRays()
     {
-        Bounds bounds = playerCollider.bounds;
-        bounds.Expand(skinWidth * -2f);
-
-        horizontalRays = Mathf.Clamp(horizontalRays, 2, int.MaxValue);
-        verticalRays = Mathf.Clamp(verticalRays, 2, int.MaxValue);
-
-        horizontalRaySpace = bounds.size.y / (horizontalRays - 1f);
-        verticalRaySpace = bounds.size.x / (verticalRays - 1f);
+        for (int i = -1; i < 2; i++)
+        {
+            Debug.DrawRay(new Vector3(gameObject.transform.position.x + (i*(playerSpriteWidth / 3)),gameObject.transform.position.y - (playerSpriteLength / 2),0f ),Vector2.down* 0.5f, Color.red);
+        }
     }
 	
 	// Update is called once per frame
-	private void Update () {
-	
-		Vector2 input = new Vector2 (Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-
+	void Update () {
+		
         if(Input.GetButtonDown("Fire2"))//a
         {
             Debug.Log("A");
@@ -71,38 +58,36 @@ public class Controller : MonoBehaviour {
             Debug.Log("SELECT");
         }
         
-		const float deadzone = 0.1f;
-		if(Mathf.Abs(input.x) > deadzone)//left or right
+        if(Input.GetAxisRaw("Horizontal") != 0f)//left or right
         {
             float direction = 0f;
-			if (input.x > 0f)
+            if (Input.GetAxisRaw("Horizontal") > 0)
             {
                 direction = 1f;
-				Debug.Log("right");
             }
             else
             {
                 direction = -1f;
-				Debug.Log("left");
             }
-            
+            Debug.Log("HORIZONTAL");
             movement.x += direction * baseSpeed;
         }
 
-		if (Mathf.Abs (input.y) > deadzone) {
-			if (input.y > 0f) {//up
-				Debug.Log ("Up");
-			} else {
-				Debug.Log ("Down");
-			}
-		}
+        if(Input.GetAxisRaw("Vertical") > 0f)//up
+        {
+            Debug.Log("UP");
+        }
+        else if(Input.GetAxisRaw("Vertical") < 0f)//down
+        {
+            Debug.Log("DOWN");
+        }
 
         //slowdown and gravity
-        if(movement.x > 0f)
+        if(movement.x > 0)
         {
             movement.x -= drag;
         }
-        else if(movement.x < 0f)
+        else if(movement.x < 0)
         {
             movement.x += drag;
         }
@@ -112,7 +97,6 @@ public class Controller : MonoBehaviour {
 		}
         //movement.y -= gravity;
 
-		movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, -gravity, jumpPower),0f);
         transform.Translate(movement * Time.deltaTime);
 	}
 }
