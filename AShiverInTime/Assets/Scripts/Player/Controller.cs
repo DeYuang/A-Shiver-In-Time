@@ -106,7 +106,11 @@ public class Controller : MonoBehaviour {
         {
             movement.x += drag;
         }
-        movement.y -= gravity;
+		if(movement.y > 0f)
+		{
+			movement.y -= drag;
+		}
+        //movement.y -= gravity;
 
 		movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, -gravity, jumpPower),0f);
         transform.Translate(movement * Time.deltaTime);
