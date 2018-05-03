@@ -37,5 +37,6 @@ public class Player_Corpse : MonoBehaviour {
 
 		if (flipTime < 0.0f)
 			Destroy (this);
+
 	}
 }

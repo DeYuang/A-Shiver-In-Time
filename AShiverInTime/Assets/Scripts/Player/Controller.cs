@@ -28,6 +28,9 @@ public class Controller : MonoBehaviour {
 	public GameObject playerCorpsePrefab;
 
 	static public float levelTimer;
+
+	private int jumpCounter = 0;
+	public int maxJumps = 2;
     
     // Use this for initialization
     private void Awake () {
@@ -55,14 +58,20 @@ public class Controller : MonoBehaviour {
 	private void Update () {
 
 		bool isGrounded = Mathf.Abs (playerRigidBody.velocity.y) < 0.05f;
+		if (isGrounded) {
+			jumpCounter = 0;
+			playerRigidBody.velocity = Vector3.zero;
+		}
+		
 		Vector2 input = new Vector2 (Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 
-        if(Input.GetButtonDown("Fire2") && isGrounded)//a
+        if(Input.GetButtonDown("Fire2") && jumpCounter < maxJumps)//a
         {
             Debug.Log("A");
             movement.y += jumpPower;
             playerRigidBody.velocity = Vector3.zero;
 			jumpingTimer = jumpingAnimationTime;
+			jumpCounter++;
         }
 
         if (Input.GetButtonDown("Fire1"))//b
@@ -87,40 +96,20 @@ public class Controller : MonoBehaviour {
         {
             float direction = 0f;
 			if (input.x > 0f)
-            {
                 direction = 1f;
-				Debug.Log("right");
-            }
             else
-            {
                 direction = -1f;
-				Debug.Log("left");
-            }
             
             movement.x += direction * baseSpeed;
         }
 
-		if (Mathf.Abs (input.y) > deadzone) {
-			if (input.y > 0f) {//up
-				Debug.Log ("Up");
-			} else {
-				Debug.Log ("Down");
-			}
-		}
-
-        //slowdown and gravity
+        // Drag
         if(movement.x > 0f)
-        {
 			movement.x = Mathf.Max(movement.x - (drag * Time.deltaTime), 0.0f);
-        }
         else if(movement.x < 0f)
-        {
 			movement.x = Mathf.Min(movement.x + (drag * Time.deltaTime), 0.0f);
-        }
 		if(movement.y > 0f)
-		{
 			movement.y = Mathf.Max(movement.y - (verticalDrag * Time.deltaTime), 0.0f);
-		}
 
         movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, Physics.gravity.y, jumpPower),0f);
         playerRigidBody.position = transform.position + (movement * Time.deltaTime);

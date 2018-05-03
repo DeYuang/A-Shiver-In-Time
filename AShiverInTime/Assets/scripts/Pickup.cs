@@ -14,12 +14,10 @@ public class Pickup : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.tag == "Player")
-        {
-            gameObject.SetActive(false);
-        }
+		if (other.CompareTag ("Player"))
+			ActivatePickup ();
     }
 
     private void Awake(){
