@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Controller : MonoBehaviour {
 
-    BoxCollider2D playerCollider;
-    Rigidbody2D playerRigidBody;
+    BoxCollider playerCollider;
+    Rigidbody playerRigidBody;
 
-    public float gravity = 1f;
+    public float verticalDrag = 1f;
     public float baseSpeed = 1f;
     public float jumpPower = 1f;
     public float drag = 1f;
@@ -18,8 +18,8 @@ public class Controller : MonoBehaviour {
     
     // Use this for initialization
     private void Awake () {
-        playerCollider = GetComponent<BoxCollider2D>();
-        playerRigidBody = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<BoxCollider>();
+        playerRigidBody = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -31,6 +31,7 @@ public class Controller : MonoBehaviour {
         {
             Debug.Log("A");
             movement.y += jumpPower;
+            playerRigidBody.velocity = Vector3.zero;
         }
 
         if (Input.GetButtonDown("Fire1"))//b
@@ -77,19 +78,18 @@ public class Controller : MonoBehaviour {
         //slowdown and gravity
         if(movement.x > 0f)
         {
-            movement.x -= drag;
+            movement.x -= drag * Time.deltaTime;
         }
         else if(movement.x < 0f)
         {
-            movement.x += drag;
+            movement.x += drag * Time.deltaTime;
         }
 		if(movement.y > 0f)
 		{
-			movement.y -= drag;
+			movement.y -= verticalDrag * Time.deltaTime;
 		}
-        //movement.y -= gravity;
 
-        movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, -gravity, jumpPower),0f);
-        transform.Translate(movement * Time.deltaTime);
+        movement = new Vector3(Mathf.Clamp(movement.x, -baseSpeed, baseSpeed), Mathf.Clamp(movement.y, Physics.gravity.y, jumpPower),0f);
+        playerRigidBody.position = transform.position + (movement * Time.deltaTime);
 	}
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody))]
 public class Player_SpawnPoint : MonoBehaviour {
 
-	static public Rigidbody2D rb;
+	static public Rigidbody rb;
 	static public bool spawnPointSet = false;
 	static public Vector3 spawnPoint;
 
@@ -13,7 +13,7 @@ public class Player_SpawnPoint : MonoBehaviour {
 
 		spawnPoint = transform.position;
 		spawnPointSet = true;
-		rb = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 	static public void ResetPlayerPosition(){
