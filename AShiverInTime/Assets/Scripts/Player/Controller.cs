@@ -31,6 +31,9 @@ public class Controller : MonoBehaviour {
 
 	private int jumpCounter = 0;
 	public int maxJumps = 2;
+
+	public GameObject smokePuffJump;
+	public GameObject smokePuffLand;
     
     // Use this for initialization
     private void Awake () {
@@ -40,6 +43,7 @@ public class Controller : MonoBehaviour {
 		instance = this;
 
 		ResetTimer ();
+		ResetPlayer ();
 	}
 
 	public void Die(){
@@ -54,13 +58,22 @@ public class Controller : MonoBehaviour {
 		Level_Manager.OnPlayerDied ();
 	}
 
+	public void ResetPlayer(){
+
+		jumpCounter = 2;
+	}
+
 	// Update is called once per frame
 	private void Update () {
 
 		bool isGrounded = Mathf.Abs (playerRigidBody.velocity.y) < 0.05f;
 		if (isGrounded) {
-			jumpCounter = 0;
+			if (jumpCounter != 0) {
+				jumpCounter = 0;
+				Instantiate (smokePuffLand, transform.position + new Vector3(0.0f,0.0f,-2.0f), Quaternion.identity);
+			}
 			playerRigidBody.velocity = Vector3.zero;
+
 		}
 		
 		Vector2 input = new Vector2 (Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -72,6 +85,7 @@ public class Controller : MonoBehaviour {
             playerRigidBody.velocity = Vector3.zero;
 			jumpingTimer = jumpingAnimationTime;
 			jumpCounter++;
+			Instantiate (smokePuffJump, transform.position + new Vector3(0.0f,0.0f,-2.0f), Quaternion.identity);
         }
 
         if (Input.GetButtonDown("Fire1"))//b

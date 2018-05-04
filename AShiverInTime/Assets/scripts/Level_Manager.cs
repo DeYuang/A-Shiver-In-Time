@@ -7,7 +7,9 @@ public class Level_Manager : MonoBehaviour {
 	static public Level_Manager instance;
 	public GameObject player;
 	public GameObject deathMenu;
+	public GameObject winMenu;
 	public float levelTime = 10.0f;
+	private Controller playerController;
 
 	public float killY = -10.0f;
 
@@ -17,6 +19,8 @@ public class Level_Manager : MonoBehaviour {
 			instance = this;
 		else
 			Destroy (this);
+
+		playerController = player.GetComponent<Controller> ();
 	}
 
 	static public void ResetLevel(){
@@ -34,11 +38,21 @@ public class Level_Manager : MonoBehaviour {
 			instance.deathMenu.SetActive (false);
 
 		Controller.ResetTimer ();
+
+		instance.playerController.ResetPlayer ();
 	}
 
 	static public void OnPlayerDied(){
 
 		if(!instance.deathMenu.activeInHierarchy)
 			instance.deathMenu.SetActive(true);
+	}
+
+	static public void PlayerWins(){
+
+		instance.playerController.Die ();
+		instance.deathMenu.SetActive(false);
+
+		instance.winMenu.SetActive (true);
 	}
 }
